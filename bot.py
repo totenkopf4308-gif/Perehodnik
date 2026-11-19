@@ -11,7 +11,23 @@ from aiogram.types import (
 )
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
-COVER_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cover.jpg")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def find_cover():
+    """Ищем cover.jpg / cover.jpeg / cover.png в папке бота и подпапках, без учёта регистра."""
+    for root, _dirs, files in os.walk(BASE_DIR):
+        if ".venv" in root or ".git" in root:
+            continue
+        for name in files:
+            if name.lower() in ("cover.jpg", "cover.jpeg", "cover.png"):
+                return os.path.join(root, name)
+    return None
+
+
+COVER_PATH = find_cover()
+print(f"BASE_DIR={BASE_DIR} COVER_PATH={COVER_PATH}", flush=True)
+print("Files:", sorted(os.listdir(BASE_DIR)), flush=True)
 
 GREETING = (
     "Только лучшие треки\n"
@@ -36,7 +52,7 @@ _cover_file_id = None
 
 async def send_card(message: Message):
     global _cover_file_id
-    if _cover_file_id is None and not os.path.exists(COVER_PATH):
+    if _cover_file_id is None and not COVER_PATH:
         # Нет файла cover.jpg рядом с bot.py — шлём без картинки, чтобы бот не молчал
         await message.answer(GREETING, reply_markup=KEYBOARD)
         return
