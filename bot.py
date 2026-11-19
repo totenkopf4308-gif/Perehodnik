@@ -36,6 +36,10 @@ _cover_file_id = None
 
 async def send_card(message: Message):
     global _cover_file_id
+    if _cover_file_id is None and not os.path.exists(COVER_PATH):
+        # Нет файла cover.jpg рядом с bot.py — шлём без картинки, чтобы бот не молчал
+        await message.answer(GREETING, reply_markup=KEYBOARD)
+        return
     photo = _cover_file_id or FSInputFile(COVER_PATH)
     sent = await message.answer_photo(photo, caption=GREETING, reply_markup=KEYBOARD)
     if _cover_file_id is None and sent.photo:
