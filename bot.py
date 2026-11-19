@@ -30,9 +30,9 @@ print(f"BASE_DIR={BASE_DIR} COVER_PATH={COVER_PATH}", flush=True)
 print("Files:", sorted(os.listdir(BASE_DIR)), flush=True)
 
 GREETING = (
-    "Только лучшие треки\n"
-    "Без воды и проходняка\n"
-    "Заряжай плейлист\n"
+    "✅Только лучшие треки\n\n"
+    "✅Без воды и проходняка\n\n"
+    "✅Заряжай плейлист\n\n"
     "⬇️Ссылки на соц.сети⬇️"
 )
 
